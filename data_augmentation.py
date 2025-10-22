@@ -3,7 +3,7 @@ from pathlib import Path
 import numpy as np
 import cv2
 
-# --- milde, face-sikre augmentationer ---
+# Face augmentations
 def augment_face(img):
     h, w = img.shape[:2]
     out = img.copy()
@@ -33,7 +33,7 @@ def augment_face(img):
     beta  = np.random.uniform(-8, 8)
     out = cv2.convertScaleAbs(out, alpha=alpha, beta=beta)
 
-    # meget svag gaussian noise (valgfrit)
+    # meget svag gaussian noise 
     if np.random.rand() < 0.3:
         noise = np.random.normal(0, 3, out.shape).astype(np.float32)
         out = np.clip(out.astype(np.float32) + noise, 0, 255).astype(np.uint8)
