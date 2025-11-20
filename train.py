@@ -15,8 +15,8 @@ BATCH_SIZE = 64 # Antal billeder per batch
 EPOCHS = 50     # Maksimalt antal gennemløb
 
 # Brug de nye mean og std pixel-værdier fra dataset_analysis (placeholder [0.5, 0.25])
-DATASET_MEAN = 0.500
-DATASET_STD  = 0.250
+DATASET_MEAN = 0.5147
+DATASET_STD  = 0.2536
 
 def custom_preprocessing(img):
     """
@@ -77,7 +77,7 @@ model.add(BatchNormalization())
 model.add(Conv2D(64, kernel_size=(3, 3), activation='relu', padding='same'))
 model.add(BatchNormalization())
 model.add(MaxPooling2D(pool_size=(2, 2)))
-model.add(Dropout(0.25)) # Slukker tilfældige neuroner for at hjællpe med at forhindre overfitting
+model.add(Dropout(0.4)) # Slukker tilfældige neuroner for at hjællpe med at forhindre overfitting
 
 # Dybden øges (128 filtre) for at finde mere komplekse mønstre (former, øjne)(samme opbygning)
 model.add(Conv2D(128, kernel_size=(3, 3), activation='relu', padding='same'))
@@ -85,17 +85,17 @@ model.add(BatchNormalization())
 model.add(Conv2D(128, kernel_size=(3, 3), activation='relu', padding='same'))
 model.add(BatchNormalization())
 model.add(MaxPooling2D(pool_size=(2, 2)))
-model.add(Dropout(0.25))
+model.add(Dropout(0.4))
 
 # Dybden øges igen (156 filtre)
-model.add(Conv2D(256, kernel_size=(3, 3), activation='relu', padding='same'))
+model.add(Conv2D(128, kernel_size=(3, 3), activation='relu', padding='same'))
 model.add(BatchNormalization())
 model.add(MaxPooling2D(pool_size=(2, 2)))
-model.add(Dropout(0.25))
+model.add(Dropout(0.4))
 
 # Flatten: laver 2D billedet om til en lang liste af tal. Fully connected lag
 model.add(Flatten())
-model.add(Dense(512, activation='relu'))
+model.add(Dense(256, activation='relu'))
 model.add(BatchNormalization())
 model.add(Dropout(0.5))
 
@@ -175,7 +175,7 @@ def plot_training_history(history):
     plt.legend(loc='upper right')
     plt.title('Training vs Validation Loss')
     
-    plt.show()
+    plt.savefig('training_results.png')
 
 plot_training_history(history)
 print("Træning færdig. Bedste model er gemt som 'best_emotion_model.keras'")
